@@ -59,8 +59,8 @@ def build_state_url_dict(cache_file=False):
 
     Parameters
     ----------
-    cache_file: JSON
-        the cache file of the retrived data (states and their url)
+    cache_file: Bool
+        True means using cache, False means using fetching.
 
     Returns
     -------
@@ -107,8 +107,8 @@ def get_site_instance(site_url, cache_file=False):
     ----------
     site_url: string
         The URL for a national site page in nps.gov
-    cache_file: JSON
-        the cache file of the retrived data (sites information)
+    cache_file: Bool
+        True means using cache, False means using fetching.
     
     Returns
     -------
@@ -167,6 +167,8 @@ def get_sites_for_state(state_url, cache_file=False):
     ----------
     state_url: string
         The URL for a state page in nps.gov
+    cache_file: Bool
+        True means using cache, False means using fetching.
     
     Returns
     -------
@@ -217,6 +219,8 @@ def get_nearby_places(site_object, cache_file=False):
     ----------
     site_object: object
         an instance of a national site
+    cache_file: Bool
+        True means using cache, False means using fetching.
     
     Returns
     -------
@@ -257,6 +261,8 @@ def print_nearby_places(list, cache_file=False):
     ----------
     list: list
         a list of national site instances
+    cache_file: Bool
+        True means using cache, False means using fetching.
     
     Returns
     -------
@@ -290,22 +296,22 @@ def print_nearby_places(list, cache_file=False):
         print('*'*50)
         for i in range(l):
             temp = Results_Dictionary[i]['fields']
-            if temp['name'].strip() != '':
-                place_name = temp['name'].strip()
-            else:
+            if (temp['name'] is None) or temp['name'] == '':
                 place_name = 'no name'
-            if temp['group_sic_code_name'].strip() != '':
-                place_category = temp['group_sic_code_name']
             else:
+                place_name = temp['name'].strip()
+            if (temp['group_sic_code_name'] is None) or temp['group_sic_code_name'] == '':
                 place_category = 'no category'
-            if temp['address'].strip() != '':
-                place_address = temp['address']
             else:
+                place_category = temp['group_sic_code_name'].strip()
+            if (temp['address'] is None) or temp['address'] == '':
                 place_address = 'no address'
-            if temp['city'].strip() != '':
-                place_city = temp['city']
             else:
+                place_address = temp['address'].strip()
+            if (temp['city'] is None) or temp['city'] == '':
                 place_city = 'no city'
+            else:
+                place_city = temp['city'].strip()
             print(f'- {place_name} ({place_category}): {place_address}, {place_city}')
         flag = 3
         return flag
